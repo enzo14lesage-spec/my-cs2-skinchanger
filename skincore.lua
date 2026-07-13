@@ -1,88 +1,121 @@
 -- ============================================================
 --  MY CS2 SKIN CHANGER
---  Compatible with Aimware
+--  For Aimware CS2 V6
+--  Version: 1.0.0
 -- ============================================================
 
 print("========================================")
-print("  LOADING SKIN CHANGER...")
+print("  MY CS2 SKIN CHANGER v1.0.0")
+print("  Loading...")
 print("========================================")
 
 -- ============================================================
---  WEAPONS
+--  WEAPONS DATABASE
 -- ============================================================
-local weapons = {
+local Weapons = {
     -- Knives
-    ["Bayonet"]       = 42,
+    ["Bayonet"] = 42,
     ["Classic Knife"] = 500,
-    ["Flip Knife"]    = 505,
-    ["Gut Knife"]     = 506,
-    ["Karambit"]      = 507,
-    ["M9 Bayonet"]    = 508,
-    ["Huntsman"]      = 509,
-    ["Falchion"]      = 512,
-    ["Bowie Knife"]   = 514,
-    ["Butterfly"]     = 515,
-    ["Shadow Daggers"]= 516,
-    ["Paracord"]      = 517,
-    ["Survival Knife"]= 518,
-    ["Ursus"]         = 519,
-    ["Navaja"]        = 520,
-    ["Nomad"]         = 521,
+    ["Flip Knife"] = 505,
+    ["Gut Knife"] = 506,
+    ["Karambit"] = 507,
+    ["M9 Bayonet"] = 508,
+    ["Huntsman"] = 509,
+    ["Falchion"] = 512,
+    ["Bowie Knife"] = 514,
+    ["Butterfly"] = 515,
+    ["Shadow Daggers"] = 516,
+    ["Paracord Knife"] = 517,
+    ["Survival Knife"] = 518,
+    ["Ursus Knife"] = 519,
+    ["Navaja Knife"] = 520,
+    ["Nomad Knife"] = 521,
+    
     -- Pistols
-    ["Glock-18"]      = 4,
-    ["USP-S"]         = 61,
-    ["P2000"]         = 32,
-    ["Desert Eagle"]  = 1,
-    ["R8 Revolver"]   = 64,
-    ["AK-47"]         = 7,
-    ["M4A1-S"]        = 60,
-    ["M4A4"]          = 16,
-    ["AWP"]           = 9,
-    ["SSG 08"]        = 40,
-    ["MP9"]           = 34,
-    ["MP7"]           = 33,
-    ["P90"]           = 19,
-    ["MAC-10"]        = 47,
+    ["Glock-18"] = 4,
+    ["USP-S"] = 61,
+    ["P2000"] = 32,
+    ["Desert Eagle"] = 1,
+    ["R8 Revolver"] = 64,
+    ["P250"] = 36,
+    ["CZ75-Auto"] = 63,
+    ["Dual Berettas"] = 2,
+    ["Tec-9"] = 30,
+    ["Five-SeveN"] = 3,
+    
+    -- Rifles
+    ["AK-47"] = 7,
+    ["M4A1-S"] = 60,
+    ["M4A4"] = 16,
+    ["AWP"] = 9,
+    ["SSG 08"] = 40,
+    ["SCAR-20"] = 38,
+    ["G3SG1"] = 11,
+    ["FAMAS"] = 10,
+    ["Galil AR"] = 13,
+    ["SG 553"] = 39,
+    ["AUG"] = 8,
+    
+    -- SMGs
+    ["MP9"] = 34,
+    ["MP7"] = 33,
+    ["P90"] = 19,
+    ["MAC-10"] = 47,
+    ["MP5-SD"] = 23,
+    ["UMP-45"] = 24,
+    ["PP-Bizon"] = 26,
+    
+    -- Shotguns
+    ["Nova"] = 35,
+    ["XM1014"] = 25,
+    ["MAG-7"] = 27,
+    ["Sawed-Off"] = 29,
+    
+    -- Heavy
+    ["M249"] = 14,
+    ["Negev"] = 28,
 }
 
 -- ============================================================
---  SKINS
+--  SKINS DATABASE
 -- ============================================================
-local skins = {
-    ["None"]          = 0,
-    ["Dragon Lore"]   = 10061,
-    ["Howl"]          = 10048,
-    ["Medusa"]        = 10057,
-    ["Fire Serpent"]  = 10058,
-    ["Asiimov"]       = 310,
-    ["Redline"]       = 400,
-    ["Bloodsport"]    = 10052,
-    ["Neo-Noir"]      = 10053,
-    ["Printstream"]   = 10064,
-    ["Doppler P1"]    = 411,
-    ["Doppler P2"]    = 411,
-    ["Doppler P3"]    = 411,
-    ["Doppler P4"]    = 411,
-    ["Ruby"]          = 411,
-    ["Sapphire"]      = 411,
-    ["Black Pearl"]   = 411,
-    ["Marble Fade"]   = 413,
-    ["Fade"]          = 38,
-    ["Tiger Tooth"]   = 412,
+local Skins = {
+    ["None"] = 0,
+    ["Dragon Lore"] = 10061,
+    ["Howl"] = 10048,
+    ["Medusa"] = 10057,
+    ["Fire Serpent"] = 10058,
+    ["Asiimov"] = 310,
+    ["Redline"] = 400,
+    ["Bloodsport"] = 10052,
+    ["Neo-Noir"] = 10053,
+    ["Printstream"] = 10064,
+    ["Doppler Phase 1"] = 411,
+    ["Doppler Phase 2"] = 411,
+    ["Doppler Phase 3"] = 411,
+    ["Doppler Phase 4"] = 411,
+    ["Doppler Ruby"] = 411,
+    ["Doppler Sapphire"] = 411,
+    ["Doppler Black Pearl"] = 411,
+    ["Marble Fade"] = 413,
+    ["Fade"] = 38,
+    ["Tiger Tooth"] = 412,
     ["Gamma Doppler"] = 414,
-    ["Lore"]          = 10056,
-    ["Autotronic"]    = 10048,
-    ["Black Laminate"]= 408,
-    ["Blue Steel"]    = 34,
+    ["Lore"] = 10056,
+    ["Autotronic"] = 10048,
+    ["Black Laminate"] = 408,
+    ["Blue Steel"] = 34,
+    ["Boreal Forest"] = 43,
+    ["Bright Water"] = 836,
     ["Case Hardened"] = 39,
-    ["Crimson Web"]   = 400,
-    ["Damascus Steel"]= 409,
+    ["Crimson Web"] = 400,
+    ["Damascus Steel"] = 409,
 }
 
 -- ============================================================
 --  STATE
 -- ============================================================
-local state = {
+local State = {
     wear = 0.00,
     seed = 0,
     currentWeapon = nil,
@@ -90,131 +123,113 @@ local state = {
 }
 
 -- ============================================================
---  COMMANDS
+--  CORE FUNCTIONS
 -- ============================================================
+
+function Execute(cmd)
+    if type(executeCommand) == "function" then
+        executeCommand(cmd)
+        return true
+    else
+        print("[Error] Cannot execute: " .. cmd)
+        return false
+    end
+end
+
+-- ============================================================
+--  SKIN FUNCTIONS
+-- ============================================================
+
 function Apply(weaponName, skinName)
-    local weaponId = weapons[weaponName]
-    local skinId = skins[skinName]
+    local weaponId = Weapons[weaponName]
+    local skinId = Skins[skinName]
     
     if not weaponId then
         print("[Error] Weapon not found: " .. weaponName)
-        print("Available: Karambit, Butterfly, AK-47, AWP, etc.")
-        return
+        print("[Info] Available: Karambit, Butterfly, AK-47, AWP, etc.")
+        return false
     end
     
     if not skinId then
         print("[Error] Skin not found: " .. skinName)
-        print("Available: Fade, Doppler P1, Dragon Lore, etc.")
-        return
+        print("[Info] Available: Fade, Doppler Phase 1, Dragon Lore, etc.")
+        return false
     end
     
     local cmd = string.format("skins %d %d %d %.3f %d", 
-        weaponId, skinId, skinId, state.wear, state.seed)
+        weaponId, skinId, skinId, State.wear, State.seed)
     
-    if executeCommand then
-        executeCommand(cmd)
-        state.currentWeapon = weaponName
-        state.currentSkin = skinName
-        print("[OK] Applied " .. skinName .. " to " .. weaponName)
-    else
-        print("[Error] Cannot execute command")
+    if Execute(cmd) then
+        State.currentWeapon = weaponName
+        State.currentSkin = skinName
+        print("[✓] Applied " .. skinName .. " to " .. weaponName)
+        return true
     end
+    return false
 end
 
 function Remove()
-    if state.currentWeapon then
-        local weaponId = weapons[state.currentWeapon]
-        if weaponId and executeCommand then
-            executeCommand(string.format("skins %d 0", weaponId))
-            print("[OK] Removed skin from " .. state.currentWeapon)
-            state.currentWeapon = nil
-            state.currentSkin = "None"
+    if State.currentWeapon then
+        local weaponId = Weapons[State.currentWeapon]
+        if weaponId then
+            Execute(string.format("skins %d 0", weaponId))
+            print("[✓] Removed skin from " .. State.currentWeapon)
+            State.currentWeapon = nil
+            State.currentSkin = "None"
+            return true
         end
     else
         print("[Info] No skin active")
     end
+    return false
 end
 
 function Reset()
-    if executeCommand then
-        executeCommand("skins 0")
-        state.currentWeapon = nil
-        state.currentSkin = "None"
-        state.wear = 0.00
-        state.seed = 0
-        print("[OK] All skins reset")
-    end
+    Execute("skins 0")
+    State.currentWeapon = nil
+    State.currentSkin = "None"
+    State.wear = 0.00
+    State.seed = 0
+    print("[✓] All skins reset")
+    return true
 end
 
 function SetWear(value)
-    state.wear = tonumber(value) or 0.00
-    print("[OK] Wear set to " .. state.wear)
+    local val = tonumber(value)
+    if val and val >= 0 and val <= 1 then
+        State.wear = val
+        print("[✓] Wear set to " .. State.wear)
+    else
+        print("[Error] Wear must be between 0.00 and 1.00")
+    end
 end
 
 function SetSeed(value)
-    state.seed = tonumber(value) or 0
-    print("[OK] Seed set to " .. state.seed)
-end
-
-function Help()
-    print("")
-    print("========================================")
-    print("  SKIN CHANGER COMMANDS")
-    print("========================================")
-    print("")
-    print("  Apply('Weapon', 'Skin')  - Apply skin")
-    print("  Remove()                 - Remove skin")
-    print("  Reset()                  - Reset all")
-    print("  SetWear(0.05)            - Set wear")
-    print("  SetSeed(0)               - Set seed")
-    print("  ListWeapons()            - List weapons")
-    print("  ListSkins()              - List skins")
-    print("  Help()                   - This menu")
-    print("")
-    print("  Examples:")
-    print("    Apply('Karambit', 'Fade')")
-    print("    Apply('AK-47', 'Redline')")
-    print("    Apply('AWP', 'Dragon Lore')")
-    print("========================================")
-end
-
-function ListWeapons()
-    print("")
-    print("=== WEAPONS ===")
-    local count = 0
-    for name, id in pairs(weapons) do
-        print("  " .. name)
-        count = count + 1
-    end
-    print("Total: " .. count)
-end
-
-function ListSkins()
-    print("")
-    print("=== SKINS ===")
-    for name, id in pairs(skins) do
-        print("  " .. name)
+    local val = tonumber(value)
+    if val and val >= 0 and val <= 999 then
+        State.seed = val
+        print("[✓] Seed set to " .. State.seed)
+    else
+        print("[Error] Seed must be between 0 and 999")
     end
 end
 
 -- ============================================================
 --  VOTE REVEALER
 -- ============================================================
-local voteActive = false
+local VoteActive = false
 
 function Votes()
-    if executeCommand then
-        if voteActive then
-            executeCommand("sv_vote_issue_show_votes 0")
-            executeCommand("sv_vote_issue_show_votes_all 0")
-            voteActive = false
-            print("[VoteRevealer] OFF")
-        else
-            executeCommand("sv_vote_issue_show_votes 1")
-            executeCommand("sv_vote_issue_show_votes_all 1")
-            voteActive = true
-            print("[VoteRevealer] ON")
-        end
+    if VoteActive then
+        Execute("sv_vote_issue_show_votes 0")
+        Execute("sv_vote_issue_show_votes_all 0")
+        VoteActive = false
+        print("[VoteRevealer] OFF")
+    else
+        Execute("sv_vote_issue_show_votes 1")
+        Execute("sv_vote_issue_show_votes_all 1")
+        VoteActive = true
+        print("[VoteRevealer] ON")
     end
 end
 
@@ -226,12 +241,12 @@ function Preset(name)
         ["Red"] = {
             ["AK-47"] = "Redline",
             ["AWP"] = "Dragon Lore",
-            ["Karambit"] = "Ruby"
+            ["Karambit"] = "Doppler Ruby"
         },
         ["Blue"] = {
             ["M4A1-S"] = "Printstream",
-            ["USP-S"] = "Blueprint",
-            ["Butterfly"] = "Sapphire"
+            ["USP-S"] = "Printstream",
+            ["Butterfly"] = "Doppler Sapphire"
         },
         ["Green"] = {
             ["AK-47"] = "Gamma Doppler",
@@ -242,82 +257,124 @@ function Preset(name)
             ["AK-47"] = "Gold",
             ["Desert Eagle"] = "Gold",
             ["Butterfly"] = "Fade"
+        },
+        ["All Knives"] = {
+            ["Karambit"] = "Fade",
+            ["Butterfly"] = "Fade",
+            ["M9 Bayonet"] = "Fade",
+            ["Bayonet"] = "Fade"
         }
     }
     
     local preset = presets[name]
     if not preset then
         print("[Error] Preset not found: " .. name)
-        print("Available: Red, Blue, Green, Gold")
-        return
+        print("[Info] Available: Red, Blue, Green, Gold, All Knives")
+        return false
     end
     
     print("[Preset] Applying " .. name)
     for weapon, skin in pairs(preset) do
         Apply(weapon, skin)
     end
+    return true
 end
 
 -- ============================================================
---  MENU
+--  LIST FUNCTIONS
 -- ============================================================
-function Menu()
+function ListWeapons()
+    print("")
+    print("=== WEAPONS ===")
+    local list = {}
+    for name, id in pairs(Weapons) do
+        table.insert(list, name)
+    end
+    table.sort(list)
+    for i, name in ipairs(list) do
+        print("  " .. name)
+    end
+    print("Total: " .. #list)
+end
+
+function ListSkins()
+    print("")
+    print("=== SKINS ===")
+    local list = {}
+    for name, id in pairs(Skins) do
+        table.insert(list, name)
+    end
+    table.sort(list)
+    for i, name in ipairs(list) do
+        print("  " .. name)
+    end
+    print("Total: " .. #list)
+end
+
+-- ============================================================
+--  HELP
+-- ============================================================
+function Help()
     print("")
     print("========================================")
-    print("  SKIN CHANGER MENU")
+    print("  MY CS2 SKIN CHANGER v1.0.0")
     print("========================================")
     print("")
-    print("  [1] Apply Skin")
-    print("  [2] Remove Skin")
-    print("  [3] Reset All")
-    print("  [4] Toggle Vote Revealer - " .. (voteActive and "ON" or "OFF"))
-    print("  [5] Apply Preset")
-    print("  [6] Help")
+    print("  COMMANDS:")
     print("")
-    print("  Status:")
-    print("    Weapon: " .. (state.currentWeapon or "None"))
-    print("    Skin: " .. (state.currentSkin or "None"))
-    print("    Wear: " .. state.wear)
+    print("  Apply('Weapon', 'Skin')  - Apply a skin")
+    print("  Remove()                 - Remove current skin")
+    print("  Reset()                  - Reset all skins")
+    print("  SetWear(0.05)            - Set wear value (0-1)")
+    print("  SetSeed(0)               - Set seed value (0-999)")
+    print("  Votes()                  - Toggle vote revealer")
+    print("  Preset('Name')           - Apply a preset")
+    print("  ListWeapons()            - List all weapons")
+    print("  ListSkins()              - List all skins")
+    print("  Help()                   - Show this help")
+    print("")
+    print("  EXAMPLES:")
+    print("  Apply('Karambit', 'Fade')")
+    print("  Apply('AK-47', 'Redline')")
+    print("  Apply('AWP', 'Dragon Lore')")
+    print("  Preset('Red')")
+    print("  Votes()")
+    print("")
     print("========================================")
 end
 
 -- ============================================================
---  EXPOSE GLOBALS
+--  AUTO-START
 -- ============================================================
+
+-- Expose globals
 _G.Apply = Apply
 _G.Remove = Remove
 _G.Reset = Reset
 _G.SetWear = SetWear
 _G.SetSeed = SetSeed
-_G.Help = Help
-_G.ListWeapons = ListWeapons
-_G.ListSkins = ListSkins
 _G.Votes = Votes
 _G.Preset = Preset
-_G.Menu = Menu
+_G.ListWeapons = ListWeapons
+_G.ListSkins = ListSkins
+_G.Help = Help
 
--- ============================================================
---  STARTUP
--- ============================================================
+-- Show startup banner
 print("")
 print("========================================")
-print("  SKIN CHANGER READY!")
+print("  ✓ SKIN CHANGER READY!")
 print("========================================")
 print("")
-print("  Commands:")
-print("    Apply('Karambit', 'Fade')")
-print("    Apply('AK-47', 'Redline')")
-print("    Apply('AWP', 'Dragon Lore')")
-print("    Remove()")
-print("    Reset()")
-print("    Help()")
-print("    Menu()")
+print("  Quick Commands:")
+print("  Apply('Karambit', 'Fade')")
+print("  Apply('AK-47', 'Redline')")
+print("  Preset('Red')")
+print("  Votes()")
+print("  Help()")
 print("")
-print("  Examples:")
-print("    Apply('Karambit', 'Fade')")
-print("    Apply('M9 Bayonet', 'Doppler P2')")
-print("    Preset('Red')")
-print("    Votes()")
 print("========================================")
+
+-- Auto-apply if needed (uncomment if you want)
+-- Apply('Karambit', 'Fade')
 
 return true
