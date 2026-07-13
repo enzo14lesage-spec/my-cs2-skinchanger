@@ -1,14 +1,14 @@
 -- ============================================================
---  🎯 MY CS2 SKIN CHANGER LOADER
+--  MY CS2 SKIN CHANGER LOADER
 --  Version: 1.0.0
---  Made by: [Your Name]
---  Features: Skin Changer | Custom Models | Vote Revealer
+--  Made by: enzo14lesage-spec
+--  Repository: https://github.com/enzo14lesage-spec/my-cs2-skinchanger
 -- ============================================================
 
 local loader = {
     name        = "MyCS2SkinChanger",
     version     = "1.0.0",
-    author      = "YourName",
+    author      = "enzo14lesage-spec",
     repository  = "https://raw.githubusercontent.com/enzo14lesage-spec/my-cs2-skinchanger/main/",
     cachePath   = ".\\my_skinchanger_cache\\",
     
@@ -20,55 +20,30 @@ local loader = {
 }
 
 -- ============================================================
---  COLOR CODES
--- ============================================================
-local colors = {
-    reset   = "\x01",
-    red     = "\x02",
-    green   = "\x03",
-    yellow  = "\x04",
-    blue    = "\x05",
-    purple  = "\x06",
-    cyan    = "\x07",
-    white   = "\x08"
-}
-
--- ============================================================
 --  LOGGING SYSTEM
 -- ============================================================
 function loader:log(msg, type)
     local prefix = ""
-    local color = colors.white
-    
     if type == "error" then
-        prefix = colors.red .. "[✘]"
-        color = colors.red
+        prefix = "[ERROR] "
     elseif type == "success" then
-        prefix = colors.green .. "[✓]"
-        color = colors.green
+        prefix = "[OK] "
     elseif type == "warning" then
-        prefix = colors.yellow .. "[⚠]"
-        color = colors.yellow
+        prefix = "[WARN] "
     elseif type == "info" then
-        prefix = colors.cyan .. "[i]"
-        color = colors.cyan
-    elseif type == "debug" then
-        prefix = colors.purple .. "[D]"
-        color = colors.purple
+        prefix = "[INFO] "
     else
-        prefix = colors.blue .. "[•]"
-        color = colors.blue
+        prefix = "[loader] "
     end
-    
-    print(string.format("%s %s %s%s", prefix, colors.white, color, msg))
+    print(prefix .. msg)
 end
 
 function loader:header()
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.white .. "  🎯 " .. self.name .. " v" .. self.version .. colors.cyan .. "                    ║")
-    print(colors.cyan .. "║" .. colors.white .. "  👤 " .. self.author .. colors.cyan .. "                                          ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
+    print("========================================")
+    print("  MY CS2 SKIN CHANGER LOADER v" .. self.version)
+    print("  Author: " .. self.author)
+    print("========================================")
     print("")
 end
 
@@ -80,7 +55,6 @@ function loader:createCacheDir()
         local cmd = string.format('!mkdir "%s"', self.cachePath)
         executeCommand(cmd)
     end)
-    
     if not success then
         self:log("Could not create cache directory: " .. tostring(err), "warning")
     end
@@ -95,8 +69,9 @@ function loader:fetchFile(filename)
     local cacheFile = self.cachePath .. filename
     
     -- Try to fetch from server
-    local src, err = pcall(function()
-        return http.Get(url .. "?nocache=" .. os.time())
+    local src = nil
+    pcall(function()
+        src = http.Get(url .. "?nocache=" .. os.time())
     end)
     
     if src and type(src) == "string" and #src > 500 then
@@ -116,15 +91,14 @@ function loader:fetchFile(filename)
     
     -- Fallback to cache
     if self.config.useCache then
-        local cached, err = pcall(function()
+        local cached = nil
+        pcall(function()
             local f = file.Open(cacheFile, "r")
             if f then
-                local data = f:Read()
+                cached = f:Read()
                 f:Close()
-                return data
             end
         end)
-        
         if cached and type(cached) == "string" and #cached > 500 then
             self:log("Loaded from cache: " .. filename, "success")
             return cached, "cache"
@@ -147,7 +121,7 @@ function loader:checkUpdate()
     if versionFile then
         local remoteVersion = versionFile:match("%d+%.%d+%.%d+")
         if remoteVersion and remoteVersion ~= self.version then
-            self:log("Update available: " .. remoteVersion .. " (current: " .. self.version .. ")", "success")
+            self:log("Update available: " .. remoteVersion .. " (current: " .. self.version .. ")", "info")
             return true
         end
     end
@@ -207,9 +181,9 @@ function loader:load()
         return false
     end
     
-    self:log("✅ " .. self.name .. " loaded successfully!", "success")
-    self:log("🎮 Open menu with: SC:showMenu()", "info")
-    self:log("📚 Type: Help() for commands", "info")
+    self:log("Skin changer loaded successfully!", "success")
+    self:log("Type: Help() for commands", "info")
+    self:log("Type: SC:showMenu() for menu", "info")
     
     return true
 end
@@ -235,16 +209,6 @@ end
 --  BANNER
 -- ============================================================
 loader:header()
-print(colors.green .. "  ✅ Loader ready! Type: LoadMySkinChanger()")
-print(colors.yellow .. "  ⚠️  Use only in private matches!")
-print(colors.cyan .. "  📚 Commands will be available after loading.")
+print("  Loader ready! Type: LoadMySkinChanger()")
 print("")
-print(colors.white .. "  ───────────────────────────────────────────")
-print(colors.white .. "  " .. colors.cyan .. "📂" .. colors.white .. "  GitHub: " .. colors.blue .. loader.repository)
-print(colors.white .. "  " .. colors.green .. "📦" .. colors.white .. "  Version: " .. colors.yellow .. loader.version)
-print(colors.white .. "  " .. colors.purple .. "👤" .. colors.white .. "  Author: " .. colors.cyan .. loader.author)
-print("")
-print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-print(colors.cyan .. "║" .. colors.yellow .. "  💡 Type: LoadMySkinChanger() to start" .. colors.cyan .. "        ║")
-print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-print("")
+print("========================================")
