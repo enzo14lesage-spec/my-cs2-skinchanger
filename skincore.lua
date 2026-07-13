@@ -1,6 +1,6 @@
 -- ============================================================
 --  SKIN CHANGER
---  FemboyTap Style UI
+--  FemboyTap Style
 --  For Aimware V6
 -- ============================================================
 
@@ -9,7 +9,6 @@
 -- ============================================================
 
 local Weapons = {
-    -- Knives
     ["Bayonet"] = 42,
     ["Classic Knife"] = 500,
     ["Flip Knife"] = 505,
@@ -83,17 +82,17 @@ local function ResetAll()
 end
 
 -- ============================================================
---  GUI - FEMBOYTAP STYLE
+--  GUI - FIXED
 -- ============================================================
 
--- Main Window
-local Window = gui.Window("skin_changer_window", "Skin Changer", 10, 10, 500, 420)
+-- Main Window - Bigger and positioned correctly
+local Window = gui.Window("skin_changer_window", "Skin Changer", 50, 50, 600, 500)
 
 -- ============================================================
---  WEAPONS SECTION
+--  WEAPONS
 -- ============================================================
-local WeaponGroup = gui.Groupbox(Window, "Weapons", 10, 10, 230, 280)
-local WeaponList = gui.Listbox(WeaponGroup, "", 10, 20, 210, 240)
+local WeaponGroup = gui.Groupbox(Window, "Weapons", 20, 20, 260, 300)
+local WeaponList = gui.Listbox(WeaponGroup, "", 10, 25, 240, 250)
 
 local weaponNames = {}
 for name, id in pairs(Weapons) do
@@ -104,44 +103,44 @@ WeaponList:SetItems(weaponNames)
 WeaponList:SetValue(1)
 
 -- ============================================================
---  SKINS SECTION
+--  SKINS
 -- ============================================================
-local SkinGroup = gui.Groupbox(Window, "Skins", 250, 10, 230, 280)
-local SkinList = gui.Listbox(SkinGroup, "", 10, 20, 210, 240)
+local SkinGroup = gui.Groupbox(Window, "Skins", 300, 20, 260, 300)
+local SkinList = gui.Listbox(SkinGroup, "", 10, 25, 240, 250)
 
 local skinNames = {}
 for name, id in pairs(Skins) do
     table.insert(skinNames, name)
 end
 table.sort(skinNames)
-SkinList:SetValue(1) -- None
 SkinList:SetItems(skinNames)
+SkinList:SetValue(1)
 
 -- ============================================================
---  SETTINGS SECTION
+--  SETTINGS
 -- ============================================================
-local SettingsGroup = gui.Groupbox(Window, "Settings", 10, 300, 470, 70)
+local SettingsGroup = gui.Groupbox(Window, "Settings", 20, 335, 540, 80)
 
 -- Wear
-local WearText = gui.Text(SettingsGroup, "Wear / Float:", 10, 20, 80, 20)
-local WearSlider = gui.Slider(SettingsGroup, "", 95, 20, 150, 20)
+local WearText = gui.Text(SettingsGroup, "Wear / Float:", 20, 25, 90, 20)
+local WearSlider = gui.Slider(SettingsGroup, "", 120, 25, 250, 20)
 WearSlider:SetMinMax(0, 100)
 WearSlider:SetValue(0)
 
-local WearValue = gui.Text(SettingsGroup, "0.000", 250, 20, 50, 20)
+local WearValue = gui.Text(SettingsGroup, "0.000", 380, 25, 60, 20)
 
 -- Seed
-local SeedText = gui.Text(SettingsGroup, "Seed:", 310, 20, 40, 20)
-local SeedSlider = gui.Slider(SettingsGroup, "", 355, 20, 100, 20)
+local SeedText = gui.Text(SettingsGroup, "Seed:", 20, 50, 40, 20)
+local SeedSlider = gui.Slider(SettingsGroup, "", 120, 50, 250, 20)
 SeedSlider:SetMinMax(0, 999)
 SeedSlider:SetValue(0)
 
-local SeedValue = gui.Text(SettingsGroup, "0", 460, 20, 30, 20)
+local SeedValue = gui.Text(SettingsGroup, "0", 380, 50, 60, 20)
 
 -- ============================================================
---  ACTIONS SECTION
+--  ACTIONS
 -- ============================================================
-local ActionsGroup = gui.Groupbox(Window, "Actions", 10, 380, 470, 35)
+local ActionsGroup = gui.Groupbox(Window, "Actions", 20, 430, 540, 45)
 
 local ApplyButton = gui.Button(ActionsGroup, "Apply", function()
     local weaponIndex = WeaponList:GetValue()
@@ -161,10 +160,12 @@ local ResetButton = gui.Button(ActionsGroup, "Reset All", function()
     ResetAll()
     WearSlider:SetValue(0)
     SeedSlider:SetValue(0)
+    WearValue:SetText("0.000")
+    SeedValue:SetText("0")
 end)
 
 -- ============================================================
---  UPDATE WEAR/SEED DISPLAY
+--  CALLBACKS
 -- ============================================================
 WearSlider:SetCallback(function()
     local val = WearSlider:GetValue()
@@ -176,9 +177,6 @@ SeedSlider:SetCallback(function()
     SeedValue:SetText(tostring(val))
 end)
 
--- ============================================================
---  AUTO-APPLY ON SELECT
--- ============================================================
 WeaponList:SetCallback(function()
     local weaponIndex = WeaponList:GetValue()
     local skinIndex = SkinList:GetValue()
@@ -200,12 +198,14 @@ SkinList:SetCallback(function()
 end)
 
 -- ============================================================
---  INIT
+--  AUTO-APPLY ON LOAD
+-- ============================================================
+ApplySkin("Karambit", "Fade")
+
+-- ============================================================
+--  MENU KEY
 -- ============================================================
 Window:SetOpenKey(gui.GetValue("adv.menukey"))
-
--- Auto-apply default
-ApplySkin("Karambit", "Fade")
 
 print("")
 print("========================================")
