@@ -9,7 +9,7 @@ local loader = {
     name        = "MyCS2SkinChanger",
     version     = "1.0.0",
     author      = "YourName",
-    repository  = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/",
+    repository  = "https://raw.githubusercontent.com/enzo14lesage-spec/my-cs2-skinchanger/main/",
     cachePath   = ".\\my_skinchanger_cache\\",
     
     config = {
