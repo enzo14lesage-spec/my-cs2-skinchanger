@@ -1,22 +1,8 @@
 -- ============================================================
---  🎯 MY CS2 SKIN CHANGER CORE
+--  MY CS2 SKIN CHANGER CORE
 --  Version: 1.0.0
 --  Features: Skin Changer | Custom Models | Vote Revealer
 -- ============================================================
-
--- ============================================================
---  COLOR CODES
--- ============================================================
-local colors = {
-    reset   = "\x01",
-    red     = "\x02",
-    green   = "\x03",
-    yellow  = "\x04",
-    blue    = "\x05",
-    purple  = "\x06",
-    cyan    = "\x07",
-    white   = "\x08"
-}
 
 local skinChanger = {
     -- ============================================================
@@ -24,22 +10,22 @@ local skinChanger = {
     -- ============================================================
     weapons = {
         -- Knives
-        ["Bayonet"]       = { id = 42, type = "knife", model = "models/weapons/v_knife_bayonet.mdl" },
-        ["Classic Knife"] = { id = 500, type = "knife", model = "models/weapons/v_knife_classic.mdl" },
-        ["Flip Knife"]    = { id = 505, type = "knife", model = "models/weapons/v_knife_flip.mdl" },
-        ["Gut Knife"]     = { id = 506, type = "knife", model = "models/weapons/v_knife_gut.mdl" },
-        ["Karambit"]      = { id = 507, type = "knife", model = "models/weapons/v_knife_karambit.mdl" },
-        ["M9 Bayonet"]    = { id = 508, type = "knife", model = "models/weapons/v_knife_m9_bayonet.mdl" },
-        ["Huntsman"]      = { id = 509, type = "knife", model = "models/weapons/v_knife_huntsman.mdl" },
-        ["Falchion"]      = { id = 512, type = "knife", model = "models/weapons/v_knife_falchion.mdl" },
-        ["Bowie Knife"]   = { id = 514, type = "knife", model = "models/weapons/v_knife_bowie.mdl" },
-        ["Butterfly"]     = { id = 515, type = "knife", model = "models/weapons/v_knife_butterfly.mdl" },
-        ["Shadow Daggers"]= { id = 516, type = "knife", model = "models/weapons/v_knife_shadow_daggers.mdl" },
-        ["Paracord"]      = { id = 517, type = "knife", model = "models/weapons/v_knife_paracord.mdl" },
-        ["Survival Knife"]= { id = 518, type = "knife", model = "models/weapons/v_knife_survival.mdl" },
-        ["Ursus"]         = { id = 519, type = "knife", model = "models/weapons/v_knife_ursus.mdl" },
-        ["Navaja"]        = { id = 520, type = "knife", model = "models/weapons/v_knife_navaja.mdl" },
-        ["Nomad"]         = { id = 521, type = "knife", model = "models/weapons/v_knife_nomad.mdl" },
+        ["Bayonet"]       = { id = 42, type = "knife" },
+        ["Classic Knife"] = { id = 500, type = "knife" },
+        ["Flip Knife"]    = { id = 505, type = "knife" },
+        ["Gut Knife"]     = { id = 506, type = "knife" },
+        ["Karambit"]      = { id = 507, type = "knife" },
+        ["M9 Bayonet"]    = { id = 508, type = "knife" },
+        ["Huntsman"]      = { id = 509, type = "knife" },
+        ["Falchion"]      = { id = 512, type = "knife" },
+        ["Bowie Knife"]   = { id = 514, type = "knife" },
+        ["Butterfly"]     = { id = 515, type = "knife" },
+        ["Shadow Daggers"]= { id = 516, type = "knife" },
+        ["Paracord"]      = { id = 517, type = "knife" },
+        ["Survival Knife"]= { id = 518, type = "knife" },
+        ["Ursus"]         = { id = 519, type = "knife" },
+        ["Navaja"]        = { id = 520, type = "knife" },
+        ["Nomad"]         = { id = 521, type = "knife" },
         
         -- Pistols
         ["Glock-18"]      = { id = 4, type = "pistol" },
@@ -239,34 +225,25 @@ local skinChanger = {
     },
     
     -- ============================================================
-    --  CS2 GAME DIRECTORIES
-    -- ============================================================
-    gameDir = {
-        agents  = "agents/models/",
-        weapons = "models/weapons/",
-        materials = "materials/"
-    },
-    
-    -- ============================================================
     --  PRESETS
     -- ============================================================
     presets = {
-        ["🌿 Green"] = {
+        ["Green"] = {
             ["AK-47"] = "Gamma Doppler",
             ["Desert Eagle"] = "Emerald",
             ["Karambit"] = "Gamma Doppler"
         },
-        ["🔴 Red"] = {
+        ["Red"] = {
             ["AK-47"] = "Redline",
             ["AWP"] = "Dragon Lore",
             ["Butterfly"] = "Ruby"
         },
-        ["🔵 Blue"] = {
+        ["Blue"] = {
             ["M4A1-S"] = "Printstream",
             ["USP-S"] = "Blueprint",
             ["Bayonet"] = "Sapphire"
         },
-        ["✨ Gold"] = {
+        ["Gold"] = {
             ["AK-47"] = "Gold",
             ["Desert Eagle"] = "Gold",
             ["Karambit"] = "Fade"
@@ -275,25 +252,13 @@ local skinChanger = {
 }
 
 -- ============================================================
---  LOGGING
--- ============================================================
-function skinChanger:log(msg, type)
-    local prefix = type == "error" and colors.red .. "[✘]" or
-                   type == "success" and colors.green .. "[✓]" or
-                   type == "warning" and colors.yellow .. "[⚠]" or
-                   type == "info" and colors.cyan .. "[i]" or
-                   colors.blue .. "[•]"
-    print(string.format("%s %s%s", prefix, colors.white, msg))
-end
-
--- ============================================================
 --  EXECUTE COMMAND
 -- ============================================================
 function skinChanger:execute(cmd)
     if type(executeCommand) == "function" then
         executeCommand(cmd)
     else
-        self:log("Cannot execute: " .. cmd, "warning")
+        print("[SkinChanger] Cannot execute: " .. cmd)
     end
 end
 
@@ -305,11 +270,11 @@ function skinChanger:applySkin(weaponName, skinName)
     local skin = self.skins[skinName]
     
     if not weapon then
-        self:log("Weapon not found: " .. weaponName, "error")
+        print("[SkinChanger] Weapon not found: " .. weaponName)
         return false
     end
     if not skin then
-        self:log("Skin not found: " .. skinName, "error")
+        print("[SkinChanger] Skin not found: " .. skinName)
         return false
     end
     
@@ -323,20 +288,20 @@ function skinChanger:applySkin(weaponName, skinName)
     self.state.selectedSkin = skinName
     self.state.isActive = true
     
-    self:log(string.format("Applied %s to %s (Wear: %.3f)",
-        skinName, weaponName, self.state.wear), "success")
+    print(string.format("[SkinChanger] Applied %s to %s (Wear: %.3f)",
+        skinName, weaponName, self.state.wear))
     return true
 end
 
 function skinChanger:removeSkin()
     if not self.state.selectedWeapon then
-        self:log("No skin active", "warning")
+        print("[SkinChanger] No skin active")
         return false
     end
     local weapon = self.weapons[self.state.selectedWeapon]
     self:execute(string.format("skins %d 0", weapon.id))
     self.state.isActive = false
-    self:log("Skin removed from " .. self.state.selectedWeapon, "success")
+    print("[SkinChanger] Skin removed")
     return true
 end
 
@@ -347,52 +312,42 @@ function skinChanger:resetSkins()
     self.state.isActive = false
     self.state.wear = 0.000
     self.state.seed = 0
-    self:log("All skins reset", "success")
+    print("[SkinChanger] All skins reset")
     return true
 end
 
 -- ============================================================
---  CUSTOM MODEL CHANGER (CS2 agents/models support)
+--  CUSTOM MODEL CHANGER
 -- ============================================================
 function skinChanger:applyCustomModel(modelName)
     local model = self.customModels[modelName]
     if not model then
-        self:log("Model not found: " .. modelName, "error")
-        self:log("Type: ListModels() to see available models", "info")
+        print("[SkinChanger] Model not found: " .. modelName)
+        print("[SkinChanger] Type: ListModels() to see available models")
         return false
     end
     
     if model.type == "player" then
-        -- CS2 player model
         self:execute("sv_cheats 1")
         self:execute(string.format("playermodel %s", model.path))
         self:execute(string.format("cl_teamid_model %s", model.path))
         self:execute("sv_force_teamid_model 1")
         self:execute(string.format("sv_force_teamid_model_path %s", model.path))
-        
         self.state.currentCustomModel = model.path
         self.state.currentModelType = "player"
-        
-        self:log(string.format("✅ Applied player model: %s (%s)",
-            model.desc or modelName, model.faction or "Unknown"), "success")
-        self:log(string.format("📂 Path: %s", model.path), "info")
-        
+        print(string.format("[CustomModel] Applied player model: %s (%s)",
+            model.desc or modelName, model.faction or "Unknown"))
     elseif model.type == "weapon" then
         self:execute("sv_cheats 1")
         self:execute(string.format("viewmodel_model %s", model.path))
-        
         self.state.currentCustomModel = model.path
         self.state.currentModelType = "weapon"
-        
-        self:log(string.format("✅ Applied weapon model: %s",
-            model.desc or modelName), "success")
-        self:log(string.format("📂 Path: %s", model.path), "info")
-        
+        print(string.format("[CustomModel] Applied weapon model: %s",
+            model.desc or modelName))
     else
-        self:log("Unknown model type", "error")
+        print("[SkinChanger] Unknown model type")
         return false
     end
-    
     return true
 end
 
@@ -404,44 +359,34 @@ function skinChanger:resetCustomModel()
     self:execute("sv_cheats 0")
     self.state.currentCustomModel = nil
     self.state.currentModelType = nil
-    self:log("Reset to default model", "success")
+    print("[CustomModel] Reset to default model")
     return true
 end
 
 function skinChanger:listCustomModels()
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.white .. "  🎨 CUSTOM MODELS" .. colors.cyan .. "                                      ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
+    print("========================================")
+    print("  CUSTOM MODELS")
+    print("========================================")
     print("")
-    
-    print(colors.yellow .. "  ─── PLAYER MODELS (Agents) ───" .. colors.white)
+    print("  --- PLAYER MODELS (Agents) ---")
     for name, model in pairs(self.customModels) do
         if model.type == "player" then
-            print(string.format("    %s• %s" .. colors.white .. " [%s]" .. colors.white .. " - %s",
-                colors.green, name, model.faction or "?", model.desc or "No description"))
+            print("    " .. name .. " [" .. model.faction .. "] - " .. model.desc)
         end
     end
-    
     print("")
-    print(colors.yellow .. "  ─── WEAPON MODELS ───" .. colors.white)
+    print("  --- WEAPON MODELS ---")
     for name, model in pairs(self.customModels) do
         if model.type == "weapon" then
-            print(string.format("    %s• %s" .. colors.white .. " [%s]" .. colors.white .. " - %s",
-                colors.purple, name, model.weapon or "?", model.desc or "No description"))
+            print("    " .. name .. " [" .. model.weapon .. "] - " .. model.desc)
         end
     end
-    
     print("")
-    print(colors.cyan .. "  📂 Place models in:" .. colors.white)
+    print("  Place models in:")
     print("    agents/models/     - Player models (.vmdl_c)")
     print("    models/weapons/    - Weapon models (.mdl)")
-    print("")
-    print(colors.yellow .. "  💡 Use: CustomModel('Name') to apply" .. colors.white)
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.white .. "  📚 Type: AddModel('Name', 'type', 'path', 'desc')" .. colors.cyan .. "  ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-    print("")
+    print("========================================")
 end
 
 function skinChanger:addCustomModel(name, modelType, path, description, weapon)
@@ -456,7 +401,7 @@ function skinChanger:addCustomModel(name, modelType, path, description, weapon)
         model.weapon = weapon or "Karambit"
     end
     self.customModels[name] = model
-    self:log("Added model: " .. name, "success")
+    print("[CustomModel] Added model: " .. name)
     return true
 end
 
@@ -468,7 +413,7 @@ function skinChanger:revealVotes()
         self:execute("sv_vote_issue_show_votes 0")
         self:execute("sv_vote_issue_show_votes_all 0")
         self.state.voteRevealerActive = false
-        self:log("Vote revealer deactivated", "warning")
+        print("[VoteRevealer] Deactivated")
         return
     end
     
@@ -478,14 +423,14 @@ function skinChanger:revealVotes()
     
     if type(RegisterEvent) == "function" then
         RegisterEvent("vote_started", function(e)
-            print(colors.cyan .. "[Vote] " .. colors.white .. "⚡ Vote started by: " .. colors.yellow .. (e.player or "Unknown"))
+            print("[Vote] Vote started by: " .. (e.player or "Unknown"))
         end)
         RegisterEvent("vote_cast", function(e)
-            print(colors.cyan .. "[Vote] " .. colors.white .. "🗳️ " .. colors.yellow .. (e.player or "Unknown") .. colors.white .. " voted: " .. colors.green .. (e.choice or "Unknown"))
+            print("[Vote] " .. (e.player or "Unknown") .. " voted: " .. (e.choice or "Unknown"))
         end)
     end
     
-    self:log("Vote revealer active", "success")
+    print("[VoteRevealer] Active")
     return true
 end
 
@@ -495,11 +440,11 @@ end
 function skinChanger:applyPreset(name)
     local preset = self.presets[name]
     if not preset then
-        self:log("Preset not found: " .. name, "error")
-        self:log("Available: Green, Red, Blue, Gold", "info")
+        print("[SkinChanger] Preset not found: " .. name)
+        print("[SkinChanger] Available: Green, Red, Blue, Gold")
         return false
     end
-    self:log("Applying preset: " .. name, "info")
+    print("[SkinChanger] Applying preset: " .. name)
     for weapon, skin in pairs(preset) do
         self:applySkin(weapon, skin)
     end
@@ -515,7 +460,7 @@ function skinChanger:resetAll()
     if self.state.voteRevealerActive then
         self:revealVotes()
     end
-    self:log("All features reset", "success")
+    print("[SkinChanger] All features reset")
     return true
 end
 
@@ -524,36 +469,33 @@ end
 -- ============================================================
 function skinChanger:help()
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.white .. "  📚 COMMANDS" .. colors.cyan .. "                                              ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
+    print("========================================")
+    print("  COMMANDS")
+    print("========================================")
     print("")
-    print(colors.yellow .. "  ─── SKIN CHANGER ───" .. colors.white)
+    print("  --- SKIN CHANGER ---")
     print("    Apply('Weapon', 'Skin')      - Apply a skin")
     print("    Remove()                     - Remove current skin")
     print("    Reset()                      - Reset everything")
     print("")
-    print(colors.yellow .. "  ─── CUSTOM MODELS ───" .. colors.white)
+    print("  --- CUSTOM MODELS ---")
     print("    CustomModel('Name')          - Apply custom model")
     print("    ListModels()                 - List all models")
     print("    ResetModel()                 - Reset to default")
-    print("    AddModel('Name', 'type', 'path', 'desc', 'weapon') - Add model")
+    print("    AddModel('Name', 'type', 'path', 'desc', 'weapon')")
     print("")
-    print(colors.yellow .. "  ─── VOTE REVEALER ───" .. colors.white)
+    print("  --- VOTE REVEALER ---")
     print("    Votes()                      - Toggle vote revealer")
     print("")
-    print(colors.yellow .. "  ─── PRESETS ───" .. colors.white)
+    print("  --- PRESETS ---")
     print("    Preset('Green')              - Apply preset")
     print("    Presets: Green, Red, Blue, Gold")
     print("")
-    print(colors.yellow .. "  ─── MISC ───" .. colors.white)
+    print("  --- MISC ---")
     print("    SC:showMenu()                - Show menu")
     print("    Help()                       - Show this help")
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.green .. "  ✅ Ready to use!" .. colors.cyan .. "                                           ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-    print("")
+    print("========================================")
 end
 
 -- ============================================================
@@ -561,38 +503,36 @@ end
 -- ============================================================
 function skinChanger:showMenu()
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.white .. "  🎯 MY CS2 SKIN CHANGER" .. colors.cyan .. "                                    ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
+    print("========================================")
+    print("  MY CS2 SKIN CHANGER")
+    print("========================================")
     print("")
-    print(colors.yellow .. "  ─── SKIN CHANGER ───" .. colors.white)
+    print("  --- SKIN CHANGER ---")
     print("    [1] Apply Skin")
     print("    [2] Remove Skin")
     print("    [3] Reset Skins")
     print("")
-    print(colors.yellow .. "  ─── CUSTOM MODELS ───" .. colors.white)
+    print("  --- CUSTOM MODELS ---")
     print("    [4] Apply Custom Model")
     print("    [5] List Models")
     print("    [6] Reset Model")
     print("")
-    print(colors.yellow .. "  ─── VOTE REVEALER ───" .. colors.white)
-    print("    [7] Toggle Vote Revealer - " .. (self.state.voteRevealerActive and colors.green .. "ON" or colors.red .. "OFF"))
+    print("  --- VOTE REVEALER ---")
+    print("    [7] Toggle Vote Revealer - " .. (self.state.voteRevealerActive and "ON" or "OFF"))
     print("")
-    print(colors.yellow .. "  ─── PRESETS ───" .. colors.white)
+    print("  --- PRESETS ---")
     print("    [8] Apply Preset")
     print("    [9] Help")
     print("    [0] Reset All")
     print("")
-    print(colors.yellow .. "  ─── STATUS ───" .. colors.white)
-    print("    Skin: " .. (self.state.selectedWeapon or "None") .. " → " .. (self.state.selectedSkin or "None"))
+    print("  --- STATUS ---")
+    print("    Skin: " .. (self.state.selectedWeapon or "None") .. " -> " .. (self.state.selectedSkin or "None"))
     print("    Model: " .. (self.state.currentCustomModel or "Default"))
-    print("    Vote Revealer: " .. (self.state.voteRevealerActive and colors.green .. "ACTIVE" or colors.red .. "INACTIVE"))
+    print("    Vote Revealer: " .. (self.state.voteRevealerActive and "ACTIVE" or "INACTIVE"))
     print("    Wear: " .. self.state.wear .. " | Seed: " .. self.state.seed)
     print("")
-    print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-    print(colors.cyan .. "║" .. colors.green .. "  💡 Type: Help() for all commands" .. colors.cyan .. "                   ║")
-    print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-    print("")
+    print("  Type: Help() for all commands")
+    print("========================================")
 end
 
 -- ============================================================
@@ -649,43 +589,28 @@ end
 --  INITIALIZATION
 -- ============================================================
 if LOADER_INFO then
-    print(string.format("%s[SkinChanger] %sLoaded by: %s v%s",
-        colors.cyan, colors.white, LOADER_INFO.name, LOADER_INFO.version))
+    print("[SkinChanger] Loaded by: " .. LOADER_INFO.name .. " v" .. LOADER_INFO.version)
 end
 
--- Auto-restore on round start
 if type(RegisterEvent) == "function" then
     RegisterEvent("round_start", function()
         if skinChanger.state.selectedWeapon and skinChanger.state.selectedSkin ~= "None" then
             skinChanger:applySkin(skinChanger.state.selectedWeapon, skinChanger.state.selectedSkin)
         end
-        if skinChanger.state.currentCustomModel then
-            -- Re-apply custom model
-        end
     end)
 end
 
--- ============================================================
---  BANNER
--- ============================================================
 print("")
-print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-print(colors.cyan .. "║" .. colors.white .. "  🎯 SKIN CHANGER READY" .. colors.cyan .. "                                       ║")
-print(colors.cyan .. "║" .. colors.white .. "  📂 CS2 Compatible | Custom Models | Vote Revealer" .. colors.cyan .. "   ║")
-print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-print("")
-print(colors.yellow .. "  📚 Commands:" .. colors.white)
-print("    " .. colors.green .. "Apply('Weapon', 'Skin')" .. colors.white .. "  - Apply a skin")
-print("    " .. colors.green .. "CustomModel('Name')" .. colors.white .. "     - Apply custom model")
-print("    " .. colors.green .. "ListModels()" .. colors.white .. "            - List all models")
-print("    " .. colors.green .. "Votes()" .. colors.white .. "                - Toggle vote revealer")
-print("    " .. colors.green .. "Preset('Green')" .. colors.white .. "        - Apply preset")
-print("    " .. colors.green .. "Help()" .. colors.white .. "                - Show all commands")
-print("")
-print(colors.cyan .. "╔═══════════════════════════════════════════════════╗")
-print(colors.cyan .. "║" .. colors.green .. "  ✅ Loaded successfully!" .. colors.cyan .. "                                        ║")
-print(colors.cyan .. "╚═══════════════════════════════════════════════════╝")
-print("")
+print("========================================")
+print("  SKIN CHANGER READY")
+print("========================================")
+print("  Commands:")
+print("    Apply('Weapon', 'Skin')")
+print("    CustomModel('Name')")
+print("    ListModels()")
+print("    Votes()")
+print("    Preset('Green')")
+print("    Help()")
+print("========================================")
 
--- Return the skin changer
 return skinChanger
