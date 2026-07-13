@@ -1,21 +1,24 @@
 -- ============================================================
---  SKIN CHANGER WITH GUI
---  For Aimware V6
+--  SKIN CHANGER
+--  For Aimware V6 - Same format as working scripts
 -- ============================================================
 
 -- Weapons
 local Weapons = {
-    Karambit = 507,
-    Butterfly = 515,
+    ["Karambit"] = 507,
+    ["Butterfly"] = 515,
     ["M9 Bayonet"] = 508,
-    Bayonet = 42,
+    ["Bayonet"] = 42,
+    ["Flip Knife"] = 505,
+    ["Gut Knife"] = 506,
+    ["Huntsman"] = 509,
+    ["Falchion"] = 512,
+    ["Bowie Knife"] = 514,
+    ["Shadow Daggers"] = 516,
     ["AK-47"] = 7,
-    M4A4 = 16,
+    ["M4A4"] = 16,
     ["M4A1-S"] = 60,
-    AWP = 9,
-    ["Desert Eagle"] = 1,
-    ["USP-S"] = 61,
-    ["Glock-18"] = 4,
+    ["AWP"] = 9,
 }
 
 -- Skins
@@ -31,117 +34,91 @@ local Skins = {
     ["Fire Serpent"] = 10058,
 }
 
--- State
-local State = {
-    selectedWeapon = "Karambit",
-    selectedSkin = "Fade",
-    wear = 0.00,
-    seed = 0,
-}
+-- Current selections
+local selectedWeapon = "Karambit"
+local selectedSkin = "Fade"
+local currentWear = 0.00
+local currentSeed = 0
 
 -- Apply function
-function ApplySkin(weapon, skin)
+local function ApplySkin(weapon, skin)
     local wid = Weapons[weapon]
     local sid = Skins[skin]
     if wid and sid then
-        executeCommand(string.format("skins %d %d %d %.3f %d", wid, sid, sid, State.wear, State.seed))
+        executeCommand(string.format("skins %d %d %d %.3f %d", wid, sid, sid, currentWear, currentSeed))
         print("[SkinChanger] Applied " .. skin .. " to " .. weapon)
-    else
-        print("[SkinChanger] Weapon or skin not found")
     end
 end
 
-function RemoveSkin()
+local function RemoveSkin()
     executeCommand("skins 0")
     print("[SkinChanger] Removed all skins")
 end
 
--- Auto-apply current selection
-function ApplyCurrent()
-    ApplySkin(State.selectedWeapon, State.selectedSkin)
-end
-
 -- ============================================================
---  GUI WINDOW
+--  GUI - EXACT SAME FORMAT AS WORKING SCRIPT
 -- ============================================================
 
--- Main window
-local Window = gui.Window("skin_changer_window", "Skin Changer", 10, 10, 400, 350)
+-- Main Window
+local Window = gui.Window("skin_changer_window", "Skin Changer", 220, 90, 500, 320)
 
--- Weapon selection
+-- Weapon Group
 local WeaponGroup = gui.Groupbox(Window, "Weapon", 10, 10, 180, 200)
 local WeaponList = gui.Listbox(WeaponGroup, "Select Weapon", 10, 20, 160, 150)
 
--- Add weapons to list
+-- Fill weapon list
 local weaponNames = {}
 for name, id in pairs(Weapons) do
     table.insert(weaponNames, name)
 end
 table.sort(weaponNames)
 WeaponList:SetItems(weaponNames)
-WeaponList:SetValue(1) -- Select first item
+WeaponList:SetValue(1)
 
--- Skin selection
+-- Skin Group
 local SkinGroup = gui.Groupbox(Window, "Skin", 200, 10, 180, 200)
 local SkinList = gui.Listbox(SkinGroup, "Select Skin", 10, 20, 160, 150)
 
--- Add skins to list
+-- Fill skin list
 local skinNames = {}
 for name, id in pairs(Skins) do
     table.insert(skinNames, name)
 end
 table.sort(skinNames)
 SkinList:SetItems(skinNames)
-SkinList:SetValue(2) -- Select "Fade"
+SkinList:SetValue(2) -- Fade
 
--- Wear slider
+-- Wear Group
 local WearGroup = gui.Groupbox(Window, "Wear / Float", 10, 220, 180, 80)
 local WearSlider = gui.Slider(WearGroup, "Wear", 0, 100, 0)
 
--- Seed slider
+-- Seed Group
 local SeedGroup = gui.Groupbox(Window, "Seed", 200, 220, 180, 80)
 local SeedSlider = gui.Slider(SeedGroup, "Seed", 0, 999, 0)
 
--- Apply button
+-- Buttons Group
 local ButtonGroup = gui.Groupbox(Window, "Actions", 10, 310, 370, 30)
 local ApplyButton = gui.Button(ButtonGroup, "Apply Skin", function()
     local weaponIndex = WeaponList:GetValue()
     local skinIndex = SkinList:GetValue()
-    State.selectedWeapon = weaponNames[weaponIndex]
-    State.selectedSkin = skinNames[skinIndex]
-    State.wear = WearSlider:GetValue() / 100
-    State.seed = SeedSlider:GetValue()
-    ApplyCurrent()
+    selectedWeapon = weaponNames[weaponIndex]
+    selectedSkin = skinNames[skinIndex]
+    currentWear = WearSlider:GetValue() / 100
+    currentSeed = SeedSlider:GetValue()
+    ApplySkin(selectedWeapon, selectedSkin)
 end)
 
--- Remove button
 local RemoveButton = gui.Button(ButtonGroup, "Remove All", function()
     RemoveSkin()
 end)
 
--- Auto-apply on selection change
-WeaponList:SetCallback(function()
-    -- Auto-apply when weapon changes
-end)
-
-SkinList:SetCallback(function()
-    -- Auto-apply when skin changes
-end)
+-- Set window to open with menu key
+Window:SetOpenKey(gui.GetValue("adv.menukey"))
 
 -- ============================================================
 --  AUTO-APPLY ON LOAD
 -- ============================================================
-
--- Apply default skin on load
 ApplySkin("Karambit", "Fade")
 
-print("")
-print("========================================")
-print("  SKIN CHANGER LOADED!")
-print("========================================")
-print("  Open Aimware menu and go to Lua tab")
-print("  Find 'Skin Changer' window")
-print("========================================")
-
--- Set window to open with menu key
-Window:SetOpenKey(gui.GetValue("adv.menukey"))
+print("[SkinChanger] Loaded successfully!")
+print("[SkinChanger] Open Aimware menu -> Lua tab -> Skin Changer")
