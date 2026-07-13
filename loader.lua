@@ -1,49 +1,55 @@
 -- My CS2 Skin Changer Loader
--- Compatible with Aimware
+-- For Aimware CS2 V6
+-- Based on the working FemboyTap loader
 
-local function log(msg)
-    print("[Loader] " .. msg)
+local USER    = "enzo14lesage-spec"
+local REPO    = "my-cs2-skinchanger"
+local VERSION = "latest"
+
+local function ref()
+    if VERSION == nil or VERSION == "" or VERSION == "latest" then return "main" end
+    return VERSION
 end
 
-log("Loading skin changer...")
+local BASE = "https://raw.githubusercontent.com/" .. USER .. "/" .. REPO .. "/" .. ref() .. "/"
 
--- Download the main script
-local url = "https://raw.githubusercontent.com/enzo14lesage-spec/my-cs2-skinchanger/main/skincore.lua"
-local src = http.Get(url .. "?t=" .. os.time())
-
-if not src or #src < 100 then
-    log("ERROR: Failed to download skincore.lua")
-    log("Check: " .. url)
-    return
+local function fetch(url, cacheFile)
+    local src
+    local bust = url .. "?nocache=" .. tostring({}):gsub("%W", "")
+    pcall(function() src = http.Get(bust) end)
+    if type(src) ~= "string" or #src <= 500 then pcall(function() src = http.Get(url) end) end
+    if type(src) == "string" and #src > 500 then
+        pcall(function()
+            local f = file.Open(cacheFile, "w")
+            if f then f:Write(src); f:Close() end
+        end)
+        return src, "server"
+    end
+    pcall(function()
+        local f = file.Open(cacheFile, "r")
+        if f then src = f:Read(); f:Close() end
+    end)
+    if type(src) == "string" and #src > 500 then return src, "cache" end
+    return nil
 end
 
-log("Downloaded " .. #src .. " bytes")
-
--- Compile and run
-local func, err = loadstring(src)
-if not func then
-    log("Compile error: " .. tostring(err))
-    return
+local src, where = fetch(BASE .. "skincore.lua", ".\\my_skinchanger_lua\\skincore.lua")
+if not src then 
+    print("[loader] FATAL: cannot fetch skincore.lua")
+    print("[loader] Check: " .. BASE .. "skincore.lua")
+    return 
 end
 
-log("Compiled successfully!")
-
--- Run the script with proper environment
-local env = {
-    print = print,
-    http = http,
-    file = file,
-    executeCommand = executeCommand,
-    RegisterEvent = RegisterEvent or function() end,
-    _G = _G
-}
-setfenv(func, env)
-
-local ok, err = pcall(func)
-if not ok then
-    log("Runtime error: " .. tostring(err))
-    return
+local chunk, err = loadstring(src, "=skincore.lua")
+if not chunk then 
+    print("[loader] compile error: " .. tostring(err)) 
+    return 
 end
 
-log("Skin changer loaded!")
-log("Type: Help() for commands")
+_G.MY_SKIN_BASE = BASE
+print(string.format("[loader] MySkinChanger %s from %s", ref(), tostring(where)))
+
+local ok, e = pcall(chunk)
+if not ok then 
+    print("[loader] run error: " .. tostring(e)) 
+end
