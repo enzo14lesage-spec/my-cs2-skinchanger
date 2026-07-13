@@ -1,7 +1,3 @@
--- My CS2 Skin Changer Loader
--- For Aimware CS2 V6
--- Based on the working FemboyTap loader
-
 local USER    = "enzo14lesage-spec"
 local REPO    = "my-cs2-skinchanger"
 local VERSION = "latest"
@@ -34,22 +30,12 @@ local function fetch(url, cacheFile)
 end
 
 local src, where = fetch(BASE .. "skincore.lua", ".\\my_skinchanger_lua\\skincore.lua")
-if not src then 
-    print("[loader] FATAL: cannot fetch skincore.lua")
-    print("[loader] Check: " .. BASE .. "skincore.lua")
-    return 
-end
+if not src then return end
 
 local chunk, err = loadstring(src, "=skincore.lua")
-if not chunk then 
-    print("[loader] compile error: " .. tostring(err)) 
-    return 
-end
+if not chunk then return end
 
 _G.MY_SKIN_BASE = BASE
 print(string.format("[loader] MySkinChanger %s from %s", ref(), tostring(where)))
 
-local ok, e = pcall(chunk)
-if not ok then 
-    print("[loader] run error: " .. tostring(e)) 
-end
+pcall(chunk)
