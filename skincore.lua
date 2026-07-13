@@ -1,6 +1,6 @@
 -- ============================================================
---  SKIN CHANGER
---  For Aimware V6 - Same format as working scripts
+--  SKIN CHANGER - Fixed Layout
+--  For Aimware V6
 -- ============================================================
 
 -- Weapons
@@ -31,7 +31,6 @@ local Skins = {
     ["Asiimov"] = 310,
     ["Printstream"] = 10064,
     ["Howl"] = 10048,
-    ["Fire Serpent"] = 10058,
 }
 
 -- Current selections
@@ -56,17 +55,16 @@ local function RemoveSkin()
 end
 
 -- ============================================================
---  GUI - EXACT SAME FORMAT AS WORKING SCRIPT
+--  GUI
 -- ============================================================
 
--- Main Window
-local Window = gui.Window("skin_changer_window", "Skin Changer", 220, 90, 500, 320)
+-- Main Window - Smaller and cleaner
+local Window = gui.Window("skin_changer_window", "Skin Changer", 10, 10, 420, 280)
 
--- Weapon Group
-local WeaponGroup = gui.Groupbox(Window, "Weapon", 10, 10, 180, 200)
-local WeaponList = gui.Listbox(WeaponGroup, "Select Weapon", 10, 20, 160, 150)
+-- Weapon List
+local WeaponGroup = gui.Groupbox(Window, "Weapon", 10, 10, 190, 180)
+local WeaponList = gui.Listbox(WeaponGroup, "Select Weapon", 10, 20, 170, 130)
 
--- Fill weapon list
 local weaponNames = {}
 for name, id in pairs(Weapons) do
     table.insert(weaponNames, name)
@@ -75,30 +73,29 @@ table.sort(weaponNames)
 WeaponList:SetItems(weaponNames)
 WeaponList:SetValue(1)
 
--- Skin Group
-local SkinGroup = gui.Groupbox(Window, "Skin", 200, 10, 180, 200)
-local SkinList = gui.Listbox(SkinGroup, "Select Skin", 10, 20, 160, 150)
+-- Skin List
+local SkinGroup = gui.Groupbox(Window, "Skin", 210, 10, 190, 180)
+local SkinList = gui.Listbox(SkinGroup, "Select Skin", 10, 20, 170, 130)
 
--- Fill skin list
 local skinNames = {}
 for name, id in pairs(Skins) do
     table.insert(skinNames, name)
 end
 table.sort(skinNames)
 SkinList:SetItems(skinNames)
-SkinList:SetValue(2) -- Fade
+SkinList:SetValue(2)
 
--- Wear Group
-local WearGroup = gui.Groupbox(Window, "Wear / Float", 10, 220, 180, 80)
-local WearSlider = gui.Slider(WearGroup, "Wear", 0, 100, 0)
+-- Wear Slider
+local WearGroup = gui.Groupbox(Window, "Wear", 10, 200, 190, 70)
+local WearSlider = gui.Slider(WearGroup, "Float", 0, 100, 0)
 
--- Seed Group
-local SeedGroup = gui.Groupbox(Window, "Seed", 200, 220, 180, 80)
+-- Seed Slider
+local SeedGroup = gui.Groupbox(Window, "Seed", 210, 200, 190, 70)
 local SeedSlider = gui.Slider(SeedGroup, "Seed", 0, 999, 0)
 
--- Buttons Group
-local ButtonGroup = gui.Groupbox(Window, "Actions", 10, 310, 370, 30)
-local ApplyButton = gui.Button(ButtonGroup, "Apply Skin", function()
+-- Buttons - Below everything
+local ButtonGroup = gui.Groupbox(Window, "", 10, 275, 390, 35)
+local ApplyButton = gui.Button(ButtonGroup, "Apply", function()
     local weaponIndex = WeaponList:GetValue()
     local skinIndex = SkinList:GetValue()
     selectedWeapon = weaponNames[weaponIndex]
@@ -112,13 +109,9 @@ local RemoveButton = gui.Button(ButtonGroup, "Remove All", function()
     RemoveSkin()
 end)
 
--- Set window to open with menu key
-Window:SetOpenKey(gui.GetValue("adv.menukey"))
-
--- ============================================================
---  AUTO-APPLY ON LOAD
--- ============================================================
+-- Auto-apply on load
 ApplySkin("Karambit", "Fade")
 
-print("[SkinChanger] Loaded successfully!")
-print("[SkinChanger] Open Aimware menu -> Lua tab -> Skin Changer")
+Window:SetOpenKey(gui.GetValue("adv.menukey"))
+
+print("[SkinChanger] Loaded!")
